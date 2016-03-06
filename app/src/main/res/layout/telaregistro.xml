@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_registro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/telaregistro_rl_aguarde"
+        android:layout_width="match_parent"
+        android:paddingTop="200dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/registrationProgressBar"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/informationTextView"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:text="@string/registering_message"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/telaregistro_ll_registro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30dp"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:text="Registro do Aparelho"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="Não foi possível registrar esse aparelho, por favor, tente novamente mais tarde."
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/telaregistro_btn_registrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="Registrar aparelho" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
