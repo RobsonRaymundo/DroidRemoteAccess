@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/txt_tela_Config">
+        <SwitchPreference
+            android:key="spf_exibeAoIniciar"
+            android:summary="@string/spf_exibe_iniciar"
+            android:defaultValue="true"
+            android:title="@string/txt_titulo">
+        </SwitchPreference>
+
+        <SwitchPreference
+            android:key="spf_exibeTempoGravacao"
+            android:summary="@string/spf_exibe_tempo_gravacao"
+            android:title="@string/spf_titulo"
+            android:defaultValue="true">
+        </SwitchPreference>
+
+        <ListPreference
+            android:key="ltp_qualidadeCameraTraseira"
+            android:summary="@string/txt_qualidade_camera_traseira"
+            android:title="@string/txt_camera_traseira"
+            android:entries="@array/qualidadeCameraTraseira"
+            android:entryValues="@array/valor_qualidadeCameraTraseira"
+            android:defaultValue="0">
+        </ListPreference>
+
+        <ListPreference
+            android:key="ltp_qualidadeCameraFrontal"
+            android:summary="@string/txt_qualidade_camera_frontal"
+            android:title="@string/txt_camera_frontal"
+            android:entries="@array/qualidadeCameraFrontal"
+            android:entryValues="@array/valor_qualidadeCameraFrontal"
+            android:defaultValue="0">
+        </ListPreference>
+
+        <ListPreference
+            android:key="ltp_localGravacaoVideo"
+            android:summary="@string/txt_local_gravacao_videos"
+            android:title="@string/txt_gravacao_videos"
+            android:entries="@array/localArquivosGravados"
+            android:entryValues="@array/valor_localArquivosGravados"
+            android:defaultValue="0">
+        </ListPreference>
+
+        <SwitchPreference
+            android:key="spf_aceitaComandoPorVoz"
+            android:summary="@string/aceitaComandoPorVoz"
+            android:defaultValue="false"
+            android:title="@string/escuta">
+        </SwitchPreference>
+
+        <SwitchPreference
+            android:key="spf_aceitaComandoPorTexto"
+            android:summary="@string/aceitaComandoPorTexto"
+            android:defaultValue="false"
+            android:title="@string/comando">
+        </SwitchPreference>
+
+        <SwitchPreference
+            android:key="spf_leComando"
+            android:summary="@string/leComando"
+            android:defaultValue="false"
+            android:title="@string/fala">
+        </SwitchPreference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

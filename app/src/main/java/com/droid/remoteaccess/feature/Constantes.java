@@ -1,4 +1,4 @@
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.feature;
 
 /**
  * Created by nalmir on 19/12/2015.
@@ -17,6 +17,27 @@ public class Constantes {
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+
+    public static enum EnumTypeViewCam
+    {
+        FacingBack,
+        FacingFront
+    }
+
+    public enum EnumStateRecVideo {
+        CLOSE,
+        STOP,
+        VIEW,
+        RECORD
+    }
+
+    public static final String CHAMADAPELOSERVICO = "chamadaPeloServico";
+    public static final String CHAMADAPORCOMANDOTEXTO = "chamadaPorComandoDeTexto";
+    public static final String CHAVERECEIVER = "DVRREC";
+    public static final String COMANDOINICIADOPOR = "DVR=";
+    public static final String PASTADOSARQUIVOSGRAVADOS = "/DroidVideoRecorder/";
+
 
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.services;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -24,20 +24,21 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.droid.remoteaccess.feature.Constantes;
+import com.droid.remoteaccess.feature.Contato;
+import com.droid.remoteaccess.dbase.Persintencia;
+import com.droid.remoteaccess.others.Methods;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 public class RegistrationIntentService extends IntentService {
@@ -67,8 +68,8 @@ public class RegistrationIntentService extends IntentService {
 
             if (email_from == null || email_from.isEmpty())
             {
-                email_from = Util.getEmail(context);
-                String device = Util.getNameDevice(context);
+                email_from = Methods.getEmail(context);
+                String device = Methods.getNameDevice(context);
                 InstanceID instanceID = InstanceID.getInstance(this);
                 token = instanceID.getToken(Constantes.SENDER_ID,
                         GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);

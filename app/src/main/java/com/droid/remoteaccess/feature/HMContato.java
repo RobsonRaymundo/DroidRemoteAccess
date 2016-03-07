@@ -1,4 +1,4 @@
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.feature;
 
 import java.util.HashMap;
 

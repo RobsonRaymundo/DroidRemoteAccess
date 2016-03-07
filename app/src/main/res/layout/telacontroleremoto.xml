@@ -23,16 +23,16 @@
         android:textSize="15sp" />
 
     <Button
-        android:id="@+id/btn_abrir"
+        android:id="@+id/btn_gravar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Abrir"/>
+        android:text="Gravar"/>
 
     <Button
-        android:id="@+id/btn_fechar"
+        android:id="@+id/btn_parar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fechar"/>
+        android:text="Parar"/>
 
 
 </LinearLayout>

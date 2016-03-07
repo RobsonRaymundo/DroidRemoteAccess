@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TranslucentTheme" parent="@android:style/Theme.Translucent.NoTitleBar">
+    </style>
+
+    <style name="DefaultTheme" parent="@android:style/Theme.DeviceDefault">
+    </style>
+
 </resources>

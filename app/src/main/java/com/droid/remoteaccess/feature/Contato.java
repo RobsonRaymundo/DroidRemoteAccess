@@ -1,4 +1,4 @@
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.feature;
 
 /**
  * Created by nalmir on 19/12/2015.

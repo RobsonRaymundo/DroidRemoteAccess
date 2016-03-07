@@ -1,4 +1,4 @@
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.activitys;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,11 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.droid.remoteaccess.feature.Constantes;
+import com.droid.remoteaccess.dbase.Persintencia;
+import com.droid.remoteaccess.R;
+import com.droid.remoteaccess.services.RegistrationIntentService;
+import com.droid.remoteaccess.others.Methods;
 
 /**
  * Created by Robson on 06/03/2016.
@@ -119,10 +123,10 @@ public class DroidRegistro extends AppCompatActivity {
     }
 
     private boolean ContatoCadastrado() {
-        boolean contatoCadastrado = persintencia.contatoCadastrado(Util.getEmail(context));
+        boolean contatoCadastrado = persintencia.contatoCadastrado(Methods.getEmail(context));
 
         if (!contatoCadastrado) {
-            if (Util.checkPlayServices(DroidRegistro.this)) {
+            if (Methods.checkPlayServices(DroidRegistro.this)) {
                 // Start IntentService to register this application with GCM.
                 Intent intent = new Intent(DroidRegistro.this, RegistrationIntentService.class);
                 startService(intent);

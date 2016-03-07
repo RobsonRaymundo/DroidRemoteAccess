@@ -1,4 +1,4 @@
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.activitys;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.droid.remoteaccess.feature.Constantes;
+import com.droid.remoteaccess.feature.Contato;
+import com.droid.remoteaccess.dbase.Persintencia;
+import com.droid.remoteaccess.R;
+import com.droid.remoteaccess.services.RegistrationIntentService;
 
 /**
  * Created by Robson on 06/03/2016.
@@ -18,8 +21,8 @@ public class DroidControleRemoto extends AppCompatActivity {
 
     private Context context;
     private TextView tv_controlando;
-    private Button btn_abrir;
-    private Button btn_fechar;
+    private Button btn_gravar;
+    private Button btn_parar;
     private Persintencia persintencia;
     private Contato contato;
     private String token;
@@ -43,19 +46,19 @@ public class DroidControleRemoto extends AppCompatActivity {
         Contato contato = persintencia.obterContato(emailTo);
         token = contato.getToken();
 
-        btn_abrir = (Button) findViewById(R.id.btn_abrir);
-        btn_abrir.setOnClickListener(new View.OnClickListener() {
+        btn_gravar = (Button) findViewById(R.id.btn_gravar);
+        btn_gravar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("Abrir");
+                EnviarMensagem("r");
             }
         });
 
-        btn_fechar = (Button) findViewById(R.id.btn_fechar);
-        btn_fechar.setOnClickListener(new View.OnClickListener() {
+        btn_parar = (Button) findViewById(R.id.btn_parar);
+        btn_parar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("Fechar");
+                EnviarMensagem("s");
             }
         });
 

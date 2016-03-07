@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.services;
 
 import android.content.Intent;
 

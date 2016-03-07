@@ -1,4 +1,4 @@
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.activitys;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.droid.remoteaccess.feature.Constantes;
+import com.droid.remoteaccess.feature.Contato;
+import com.droid.remoteaccess.feature.HMContato;
+import com.droid.remoteaccess.dbase.Persintencia;
+import com.droid.remoteaccess.R;
+import com.droid.remoteaccess.others.Methods;
 
 /**
  * Created by Robson on 06/03/2016.
@@ -34,7 +38,7 @@ public class DroidListaContatos extends AppCompatActivity {
         lv_contatos = (ListView) findViewById(R.id.telalistacontatos__lv_contatos);
         persintencia = new Persintencia(context);
 
-        contato = persintencia.obterContato(Util.getEmail(context));
+        contato = persintencia.obterContato(Methods.getEmail(context));
         tv_nomeAparelho.setText(contato.getDevice());
 
         atualizaAdapterContatos();
@@ -49,7 +53,7 @@ public class DroidListaContatos extends AppCompatActivity {
                 //
 
                 persintencia.apagarContato(item.get(HMContato.EMAIL));
-                Util.showMessage(DroidListaContatos.this, "Registro apagado");
+                Methods.showMessage(DroidListaContatos.this, "Registro apagado");
                 atualizaAdapterContatos();
                 return true;
             }

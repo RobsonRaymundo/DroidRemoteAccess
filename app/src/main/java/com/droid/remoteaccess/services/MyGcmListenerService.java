@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.droid.remoteaccess;
+package com.droid.remoteaccess.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,12 +24,22 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
 
+import com.droid.remoteaccess.feature.Constantes;
+import com.droid.remoteaccess.feature.Contato;
+import com.droid.remoteaccess.dbase.Persintencia;
+import com.droid.remoteaccess.R;
+import com.droid.remoteaccess.activitys.DroidListaContatos;
+import com.droid.remoteaccess.others.Methods;
+import com.droid.remoteaccess.recorder.DroidHeadService;
 import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
+
+
+    //private String ChamadaBroadCastPorComandoTexto() {
+        //return Methods.chamadaBroadCastPorComandoTexto(getIntent());
+    //}
 
     private static final String TAG = "MyGcmListenerService";
 
@@ -48,9 +58,9 @@ public class MyGcmListenerService extends GcmListenerService {
         String device_from = data.getString(Constantes.DEVICE_FROM);
         String message = data.getString("message");
 
-        sendNotification(message);
+       // sendNotification(message);
 
-        //Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
@@ -77,6 +87,14 @@ public class MyGcmListenerService extends GcmListenerService {
         contato_from.setToken(token_from);
         contato_from.setDevice(device_from);
         persintencia.InserirContato(contato_from);
+
+
+
+
+        Intent intentService = new Intent(getBaseContext(), DroidHeadService.class);
+        intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
+        startService(intentService);
+
 
         // [END_EXCLUDE]
     }
