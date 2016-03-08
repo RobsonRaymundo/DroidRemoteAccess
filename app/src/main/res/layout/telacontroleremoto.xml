@@ -23,16 +23,35 @@
         android:textSize="15sp" />
 
     <Button
-        android:id="@+id/btn_gravar"
+        android:id="@+id/btn_gravar_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Gravar"/>
+        android:text="Gravar Video"/>
 
     <Button
-        android:id="@+id/btn_parar"
+        android:id="@+id/btn_parar_video"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content"
+        android:text="Parar Video"/>
+
+    <Button
+        android:id="@+id/btn_gravar_audio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Parar"/>
+        android:text="Gravar Audio"/>
+
+    <Button
+        android:id="@+id/btn_parar_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Parar Audio"/>
+
+    <Button
+        android:id="@+id/btn_enviar_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enviar Audio"/>
 
 
 </LinearLayout>

@@ -31,6 +31,7 @@ import com.droid.remoteaccess.dbase.Persintencia;
 import com.droid.remoteaccess.R;
 import com.droid.remoteaccess.activitys.DroidListaContatos;
 import com.droid.remoteaccess.others.Methods;
+import com.droid.remoteaccess.recorder.DroidAudioRecorder;
 import com.droid.remoteaccess.recorder.DroidHeadService;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -88,12 +89,21 @@ public class MyGcmListenerService extends GcmListenerService {
         contato_from.setDevice(device_from);
         persintencia.InserirContato(contato_from);
 
+        Intent intentService;
 
+        if (message.startsWith("v"))
+        {
+            intentService = new Intent(getBaseContext(), DroidHeadService.class);
+        }
+        else
+        {
+            intentService = new Intent(getBaseContext(), DroidAudioRecorder.class);
+        }
 
-
-        Intent intentService = new Intent(getBaseContext(), DroidHeadService.class);
         intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
         startService(intentService);
+
+
 
 
         // [END_EXCLUDE]

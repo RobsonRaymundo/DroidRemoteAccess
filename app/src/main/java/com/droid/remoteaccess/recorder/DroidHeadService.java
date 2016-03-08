@@ -83,9 +83,9 @@ public class DroidHeadService extends Service implements TextToSpeech.OnInitList
     public void onInit(int status) {
         necessarioComandoDepoisDoInit = true;
 
-        if (ComandoPorTexto("R")) {
+        if (ComandoPorTexto("vr")) {
             Gravar();
-        } else if (ComandoPorTexto("CFG")) {
+        } else if (ComandoPorTexto("vc")) {
             AbrirConfig();
         }
     }
@@ -95,15 +95,15 @@ public class DroidHeadService extends Service implements TextToSpeech.OnInitList
         super.onStart(intent, startId);
         mIntentService = intent;
 
-        if (ComandoPorTexto("S")) {
+        if (ComandoPorTexto("vs")) {
             Parar();
-        } else if (ComandoPorTexto("V")) {
+        } else if (ComandoPorTexto("vv")) {
             Visualizar();
-        } else if (ComandoPorTexto("R")) {
+        } else if (ComandoPorTexto("vr")) {
             Gravar();
-        } else if (ComandoPorTexto("C")) {
+        } else if (ComandoPorTexto("vc")) {
             Fechar();
-        } else if (ComandoPorTexto("Q")) {
+        } else if (ComandoPorTexto("vq")) {
             Sair();
         }
     }

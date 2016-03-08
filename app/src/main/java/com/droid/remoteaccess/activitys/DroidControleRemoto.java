@@ -21,8 +21,10 @@ public class DroidControleRemoto extends AppCompatActivity {
 
     private Context context;
     private TextView tv_controlando;
-    private Button btn_gravar;
-    private Button btn_parar;
+    private Button btn_gravar_video;
+    private Button btn_parar_video;
+    private Button btn_gravar_audio;
+    private Button btn_parar_audio;
     private Persintencia persintencia;
     private Contato contato;
     private String token;
@@ -46,19 +48,35 @@ public class DroidControleRemoto extends AppCompatActivity {
         Contato contato = persintencia.obterContato(emailTo);
         token = contato.getToken();
 
-        btn_gravar = (Button) findViewById(R.id.btn_gravar);
-        btn_gravar.setOnClickListener(new View.OnClickListener() {
+        btn_gravar_video = (Button) findViewById(R.id.btn_gravar_video);
+        btn_gravar_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("r");
+                EnviarMensagem("vr");
             }
         });
 
-        btn_parar = (Button) findViewById(R.id.btn_parar);
-        btn_parar.setOnClickListener(new View.OnClickListener() {
+        btn_parar_video = (Button) findViewById(R.id.btn_parar_video);
+        btn_parar_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("s");
+                EnviarMensagem("vs");
+            }
+        });
+
+        btn_gravar_audio = (Button) findViewById(R.id.btn_gravar_audio);
+        btn_gravar_audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EnviarMensagem("ar");
+            }
+        });
+
+        btn_parar_audio = (Button) findViewById(R.id.btn_parar_audio);
+        btn_parar_audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EnviarMensagem("as");
             }
         });
 
