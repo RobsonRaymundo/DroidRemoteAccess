@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.droid.remoteaccess.feature.Contato;
 import com.droid.remoteaccess.feature.HMContato;
+import com.droid.remoteaccess.others.Methods;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -216,14 +217,14 @@ public class Persintencia extends SQLiteOpenHelper {
         return cAux;
     }
 
-    public ArrayList<HMContato> listaContatos() {
+    public ArrayList<HMContato> listaContatos(String email) {
         ArrayList<HMContato> contatos = new ArrayList<>();
         //
         Cursor cursor = null;
         //
         try {
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " ORDER BY " + EMAIL);
+            sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " WHERE " + EMAIL + " != " + "'" + email + "'" + " ORDER BY " + EMAIL);
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), null);
             //

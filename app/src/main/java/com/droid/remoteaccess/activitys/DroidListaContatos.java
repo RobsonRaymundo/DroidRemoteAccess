@@ -39,7 +39,7 @@ public class DroidListaContatos extends AppCompatActivity {
         persintencia = new Persintencia(context);
 
         contato = persintencia.obterContato(Methods.getEmail(context));
-        tv_nomeAparelho.setText(contato.getDevice());
+        tv_nomeAparelho.setText(contato.getEmail());
 
         atualizaAdapterContatos();
 
@@ -84,7 +84,7 @@ public class DroidListaContatos extends AppCompatActivity {
                 //           persintencia.listaContatos()
                 //   )
 
-                new SimpleAdapter(context, persintencia.listaContatos(), R.layout.celula, from, to)
+                new SimpleAdapter(context, persintencia.listaContatos(Methods.getEmail(context)), R.layout.celula, from, to)
 
         );
     }
