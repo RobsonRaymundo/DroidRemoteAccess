@@ -23,8 +23,10 @@ public class DroidControleRemoto extends AppCompatActivity {
     private TextView tv_controlando;
     private Button btn_gravar_video;
     private Button btn_parar_video;
+    private Button btn_enviar_video;
     private Button btn_gravar_audio;
     private Button btn_parar_audio;
+    private Button btn_enviar_audio;
     private Persintencia persintencia;
     private Contato contato;
     private String token;
@@ -64,6 +66,14 @@ public class DroidControleRemoto extends AppCompatActivity {
             }
         });
 
+        btn_enviar_video = (Button) findViewById(R.id.btn_enviar_video);
+        btn_enviar_video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EnviarMensagem("uv");
+            }
+        });
+
         btn_gravar_audio = (Button) findViewById(R.id.btn_gravar_audio);
         btn_gravar_audio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +87,14 @@ public class DroidControleRemoto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EnviarMensagem("as");
+            }
+        });
+
+        btn_enviar_audio = (Button) findViewById(R.id.btn_enviar_audio);
+        btn_enviar_audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EnviarMensagem("ua");
             }
         });
 

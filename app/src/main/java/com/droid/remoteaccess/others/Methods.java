@@ -17,6 +17,8 @@ import com.droid.remoteaccess.feature.Constantes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -45,6 +47,24 @@ public class Methods {
             }
         }
         return possibleEmail;
+    }
+
+    public static String getAccount(Context context) {
+        String account = "padrao";
+        try {
+            String email = getEmail(context);
+            String[] accounts = email.split("@");
+            account = accounts[0];
+        }catch (Exception ex)
+        {
+        }
+        return account;
+    }
+
+    public static String getDateTimeFormated()
+    {
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyyMMdd_hhmmss");
+        return simpleFormat.format( new Date( System.currentTimeMillis() ));
     }
 
     public static String getNameDevice(Context context) {

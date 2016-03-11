@@ -31,9 +31,15 @@
     <Button
         android:id="@+id/btn_parar_video"
         android:layout_width="match_parent"
-        android:layout_marginBottom="30dp"
         android:layout_height="wrap_content"
         android:text="Parar Video"/>
+
+    <Button
+        android:id="@+id/btn_enviar_video"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content"
+        android:text="Enviar Video"/>
 
     <Button
         android:id="@+id/btn_gravar_audio"

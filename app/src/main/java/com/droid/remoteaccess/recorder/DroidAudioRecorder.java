@@ -90,8 +90,8 @@ public class DroidAudioRecorder extends Service {
     }
 
     public DroidAudioRecorder() {
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/droidaudiorecorder.mp3";
+        mFileName = DroidVideoRecorder.GetPathStorage();
+        mFileName += "/audio.mp3";
     }
 
     @Nullable

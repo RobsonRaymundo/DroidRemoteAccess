@@ -18,11 +18,18 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.microphone" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
 
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <activity android:name=".activitys.DroidRegistro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +47,12 @@
 
         <activity
             android:name=".activitys.DroidConfigurationActivity"
+            android:label="@string/app_name"></activity>
+
+
+        <activity
+            android:name=".gdrive.CreateFileActivity"
+            android:theme="@style/TranslucentTheme"
             android:label="@string/app_name"></activity>
 
         <!-- [START gcm_receiver] -->

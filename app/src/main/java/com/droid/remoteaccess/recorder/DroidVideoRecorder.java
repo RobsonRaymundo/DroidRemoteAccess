@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.droid.remoteaccess.feature.Constantes;
+import com.droid.remoteaccess.others.Methods;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,9 +90,8 @@ public class DroidVideoRecorder {
 
     private static String NameFileRecDateNow()
     {
-        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyyMMdd_hhmmss");
-        String dateformat = simpleFormat.format( new Date( System.currentTimeMillis() ));
-        return GetPathStorage() + "/DVR_" + dateformat +  ".mp4";
+
+        return GetPathStorage() + "/video.mp4";
     }
 
     private static int GetDisplayOrientationRec(int orientation)

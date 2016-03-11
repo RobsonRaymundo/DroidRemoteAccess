@@ -30,6 +30,7 @@ import com.droid.remoteaccess.feature.Contato;
 import com.droid.remoteaccess.dbase.Persintencia;
 import com.droid.remoteaccess.R;
 import com.droid.remoteaccess.activitys.DroidListaContatos;
+import com.droid.remoteaccess.gdrive.CreateFileActivity;
 import com.droid.remoteaccess.others.Methods;
 import com.droid.remoteaccess.recorder.DroidAudioRecorder;
 import com.droid.remoteaccess.recorder.DroidHeadService;
@@ -94,17 +95,21 @@ public class MyGcmListenerService extends GcmListenerService {
         if (message.startsWith("v"))
         {
             intentService = new Intent(getBaseContext(), DroidHeadService.class);
+            intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
+            startService(intentService);
         }
-        else
+        else if (message.startsWith("a"))
         {
             intentService = new Intent(getBaseContext(), DroidAudioRecorder.class);
+            intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
+            startService(intentService);
         }
-
-        intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
-        startService(intentService);
-
-
-
+        else if (message.startsWith("u")){
+            Intent mIntent = new Intent(getBaseContext(), CreateFileActivity.class);
+            mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
+            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(mIntent);
+        }
 
         // [END_EXCLUDE]
     }
