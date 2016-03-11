@@ -142,18 +142,19 @@ public class CreateFileActivity extends BaseDemoActivity {
 
                     try {
 
-
-
                         OutputStream outputStream = driveContents.getOutputStream();
                         byte[] bytes = null;
                         String sMimeType = "";
+                        String sMime = "";
                         if (ComandoPorTexto("ua")) {
                             sMimeType = "audio/mpeg3";
-                            bytes = convert(DroidVideoRecorder.GetPathStorage() + "/audio.mp3");
+                            sMime = "_Audio_";
+                            bytes = convert(Methods.GetPathStorage() + "/audio.mp3");
                         }
                         else {
                             sMimeType = "video/mpeg";
-                            bytes = convert(DroidVideoRecorder.GetPathStorage() + "/video.mp4");
+                            sMime = "_Video_";
+                            bytes = convert(Methods.GetPathStorage() + "/video.mp4");
                         }
 
                         try {
@@ -164,7 +165,7 @@ public class CreateFileActivity extends BaseDemoActivity {
 
 
                         MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                                .setMimeType(sMimeType).setTitle(Methods.getAccount(getBaseContext()) + "_Audio_" + Methods.getDateTimeFormated()).build();
+                                .setMimeType(sMimeType).setTitle(Methods.getAccount(getBaseContext()) + sMime + Methods.getDateTimeFormated()).build();
 
                         // create a file on root folder
                         Drive.DriveApi.getRootFolder(getGoogleApiClient())

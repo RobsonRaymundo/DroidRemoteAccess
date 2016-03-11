@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.droid.remoteaccess.feature.Constantes;
+import com.droid.remoteaccess.others.Methods;
 
 import java.io.IOException;
 
@@ -90,7 +91,7 @@ public class DroidAudioRecorder extends Service {
     }
 
     public DroidAudioRecorder() {
-        mFileName = DroidVideoRecorder.GetPathStorage();
+        mFileName = Methods.GetPathStorage();
         mFileName += "/audio.mp3";
     }
 

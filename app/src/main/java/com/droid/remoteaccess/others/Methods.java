@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -69,7 +70,10 @@ public class Methods {
 
     public static String getNameDevice(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return tm.getMmsUserAgent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return tm.getMmsUserAgent();
+        }
+        else return "LG G Flex";
     }
 
     public static void showMessage(final Activity activity, String mensagem) {
@@ -165,6 +169,12 @@ public class Methods {
 
         }
         return chamadaPorCmdTxt;
+    }
+
+    public static String GetPathStorage()
+    {
+        // SandBox
+        return System.getenv("EXTERNAL_STORAGE");
     }
 
 }

@@ -36,32 +36,6 @@ public class DroidVideoRecorder {
         return (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()));
     }
 
-    public static String GetPathStorage() {
-        String strSDCardPath = "";
-        String strDirectory = "";
-
-        try {
-
-            if (LocalGravacaoVideo == 1) { // Cartao SD
-                if (isExternalStorageMediaMounted()) {
-                    strSDCardPath = System.getenv("SECONDARY_STORAGE");
-                    if ((null == strSDCardPath) || (strSDCardPath.length() == 0)) {
-                        strSDCardPath = System.getenv("EXTERNAL_SDCARD_STORAGE");
-                    }
-                    strDirectory = CreateGetDirectory(strSDCardPath + Constantes.PASTADOSARQUIVOSGRAVADOS);
-                }
-            }
-        } catch (Exception e) {
-        } finally {
-            if (strSDCardPath == "" || strDirectory == "") {
-                strSDCardPath = Environment.getExternalStorageDirectory().toString();
-                strDirectory = CreateGetDirectory(strSDCardPath + Constantes.PASTADOSARQUIVOSGRAVADOS);
-            }
-        }
-        return strDirectory;
-    }
-
-
     public static String CreateGetDirectory(String pathStorage)
     {
         String pathDirectory = "";
@@ -91,7 +65,7 @@ public class DroidVideoRecorder {
     private static String NameFileRecDateNow()
     {
 
-        return GetPathStorage() + "/video.mp4";
+        return Methods.GetPathStorage() + "/video.mp4";
     }
 
     private static int GetDisplayOrientationRec(int orientation)
