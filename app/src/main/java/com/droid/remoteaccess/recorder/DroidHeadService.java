@@ -111,8 +111,15 @@ public class DroidHeadService extends Service implements TextToSpeech.OnInitList
     @Override
     public void onCreate() {
         super.onCreate();
-        InicializarVariavel();
-        InicializarAcao();
+        try {
+            InicializarVariavel();
+            InicializarAcao();
+        }
+        catch ( Exception ex)
+        {
+            Log.d("DRA", ex.getMessage());
+
+        }
     }
 
     @Override

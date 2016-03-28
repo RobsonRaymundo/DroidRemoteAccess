@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.droid.remoteaccess"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
@@ -26,9 +26,13 @@ dependencies {
     // Testing dependencies
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile 'com.android.support.test:runner:0.4.1'
+
     androidTestCompile 'com.android.support:support-annotations:23.1.1'
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'com.google.android.gms:play-services-drive:8.4.0'
     compile 'com.google.android.gms:play-services-identity:8.4.0'
+
+
+
 
 }

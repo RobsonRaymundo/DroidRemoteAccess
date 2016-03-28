@@ -224,8 +224,8 @@ public class Persintencia extends SQLiteOpenHelper {
         //
         try {
             StringBuilder sb = new StringBuilder();
-            //sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " ORDER BY " + EMAIL);
-            sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " WHERE " + EMAIL + " != " + "'" + email + "'" + " ORDER BY " + EMAIL);
+            sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " ORDER BY " + EMAIL);
+            //sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " WHERE " + EMAIL + " != " + "'" + email + "'" + " ORDER BY " + EMAIL);
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), null);
             //

@@ -1,12 +1,18 @@
 package com.droid.remoteaccess.activitys;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -68,9 +74,12 @@ public class DroidRegistro extends AppCompatActivity {
             ChamaListaContatos();
         }
 
+
         btn_registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ll_registro.setVisibility(View.INVISIBLE);
+                rl_aguarde.setVisibility(View.VISIBLE);
                 ContatoCadastrado();
             }
         });

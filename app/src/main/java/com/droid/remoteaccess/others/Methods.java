@@ -73,7 +73,7 @@ public class Methods {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             return tm.getMmsUserAgent();
         }
-        else return "LG G Flex";
+        else return "Smartphone Padrao";
     }
 
     public static void showMessage(final Activity activity, String mensagem) {

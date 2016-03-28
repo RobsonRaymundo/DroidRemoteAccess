@@ -60,7 +60,7 @@ public class MyGcmListenerService extends GcmListenerService {
         String device_from = data.getString(Constantes.DEVICE_FROM);
         String message = data.getString("message");
 
-       // sendNotification(message);
+        sendNotification(message);
 
 
 
