@@ -1,7 +1,9 @@
 package com.droid.remoteaccess.activitys;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,6 +35,8 @@ public class DroidControleRemoto extends AppCompatActivity {
     private String emailFrom;
     private String emailTo;
 
+    private ReceiverResponse receiver;
+
     public DroidControleRemoto() {
     }
 
@@ -54,7 +58,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         btn_gravar_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("vr");
+                EnviarMensagem("vr", btn_gravar_video);
             }
         });
 
@@ -62,7 +66,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         btn_parar_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("vs");
+                EnviarMensagem("vs", btn_parar_video);
             }
         });
 
@@ -70,7 +74,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         btn_enviar_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("uv");
+                EnviarMensagem("uv", btn_enviar_video);
             }
         });
 
@@ -78,7 +82,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         btn_gravar_audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("ar");
+                EnviarMensagem("ar", btn_gravar_audio);
             }
         });
 
@@ -86,7 +90,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         btn_parar_audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("as");
+                EnviarMensagem("as", btn_parar_audio);
             }
         });
 
@@ -94,13 +98,56 @@ public class DroidControleRemoto extends AppCompatActivity {
         btn_enviar_audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("ua");
+                EnviarMensagem("ua", btn_enviar_audio);
             }
         });
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constantes.RECEIVERRESPONSE);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        //
+        receiver = new ReceiverResponse();
+        //
+        registerReceiver(receiver, filter);
+
     }
 
-    private void EnviarMensagem(String message)
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
+
+    private void EnabledButton (String message)
+    {
+        if (message.contentEquals("r:ua"))
+        {
+            btn_enviar_audio.setEnabled(true);
+        }
+        else if (message.contentEquals("r:as"))
+        {
+            btn_parar_audio.setEnabled(true);
+        }
+        else if (message.contentEquals("r:ar"))
+        {
+            btn_gravar_audio.setEnabled(true);
+        }
+        else  if (message.contentEquals("r:uv"))
+        {
+            btn_enviar_video.setEnabled(true);
+        }
+        else if (message.contentEquals("r:vs"))
+        {
+            btn_parar_video.setEnabled(true);
+        }
+        else if (message.contentEquals("r:vr"))
+        {
+            btn_gravar_video.setEnabled(true);
+        }
+
+    }
+
+    private void EnviarMensagem(String message, Button btn)
     {
         try {
             Intent intent = new Intent(DroidControleRemoto.this, RegistrationIntentService.class);
@@ -108,9 +155,24 @@ public class DroidControleRemoto extends AppCompatActivity {
             intent.putExtra(Constantes.EMAIL_TO, emailTo);
             intent.putExtra(Constantes.MESSAGE, message);
             startService(intent);
+            btn.setEnabled(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+    public class ReceiverResponse extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(Constantes.MESSAGE);
+            EnabledButton(message);
+        }
+    }
+
+
+
 }
+

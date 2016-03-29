@@ -36,12 +36,63 @@ import com.droid.remoteaccess.recorder.DroidAudioRecorder;
 import com.droid.remoteaccess.recorder.DroidHeadService;
 import com.google.android.gms.gcm.GcmListenerService;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class MyGcmListenerService extends GcmListenerService {
 
 
     //private String ChamadaBroadCastPorComandoTexto() {
-        //return Methods.chamadaBroadCastPorComandoTexto(getIntent());
+    //return Methods.chamadaBroadCastPorComandoTexto(getIntent());
     //}
+
+
+    private void sendResponseToServer(String token_to, String message) {
+
+        try {
+
+            // Prepare JSON containing the GCM message content. What to send and where to send.
+            JSONObject jGcmData = new JSONObject();
+            JSONObject jData = new JSONObject();
+
+            if (message != null && !message.isEmpty()) {
+                jData.put("message", message);
+            }
+
+            jGcmData.put("to", token_to); // para um aparelho especifico
+
+            // What to send in GCM message.
+            jGcmData.put("data", jData);
+
+            // Create connection to send GCM Message request.
+            URL url = new URL("https://android.googleapis.com/gcm/send");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Authorization", "key=" + Constantes.API_KEY);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            // Send GCM message content.
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(jGcmData.toString().getBytes());
+
+            // Read GCM response.
+            InputStream inputStream = conn.getInputStream();
+            String resp = IOUtils.toString(inputStream);
+            System.out.println(resp);
+            System.out.println("Check your device/emulator for notification or logcat for " +
+                    "confirmation of the receipt of the GCM message.");
+        } catch (Exception ex) {
+
+        }
+
+    }
+
 
     private static final String TAG = "MyGcmListenerService";
 
@@ -60,28 +111,7 @@ public class MyGcmListenerService extends GcmListenerService {
         String device_from = data.getString(Constantes.DEVICE_FROM);
         String message = data.getString("message");
 
-        sendNotification(message);
-
-
-
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-            // normal downstream message.
-        }
-
-        // [START_EXCLUDE]
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
+        //sendNotification(message);
 
         Persintencia persintencia = new Persintencia(getBaseContext());
         Contato contato_from = new Contato();
@@ -90,28 +120,44 @@ public class MyGcmListenerService extends GcmListenerService {
         contato_from.setDevice(device_from);
         persintencia.InserirContato(contato_from);
 
-        Intent intentService;
+        if (message != null) {
+            if (message.startsWith("r:")) {
+                //sendNotification(message);
 
-        if (message.startsWith("v"))
-        {
-            intentService = new Intent(getBaseContext(), DroidHeadService.class);
-            intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
-            startService(intentService);
-        }
-        else if (message.startsWith("a"))
-        {
-            intentService = new Intent(getBaseContext(), DroidAudioRecorder.class);
-            intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
-            startService(intentService);
-        }
-        else if (message.startsWith("u")){
-            Intent mIntent = new Intent(getBaseContext(), CreateFileActivity.class);
-            mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
-            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(mIntent);
-        }
+                Intent mIntent = new Intent();
+                mIntent.setAction(Constantes.RECEIVERRESPONSE);
+                mIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                mIntent.putExtra(Constantes.MESSAGE, message);
+                //
+                sendBroadcast(mIntent);
+            } else {
 
-        // [END_EXCLUDE]
+                if (from.startsWith("/topics/")) {
+                    // message received from some topic.
+                } else {
+                    // normal downstream message.
+                }
+
+                Intent intentService;
+
+                if (message.startsWith("v")) {
+                    intentService = new Intent(getBaseContext(), DroidHeadService.class);
+                    intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
+                    startService(intentService);
+                } else if (message.startsWith("a")) {
+                    intentService = new Intent(getBaseContext(), DroidAudioRecorder.class);
+                    intentService.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
+                    startService(intentService);
+                } else if (message.startsWith("u")) {
+                    Intent mIntent = new Intent(getBaseContext(), CreateFileActivity.class);
+                    mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
+                    mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(mIntent);
+                }
+                sendResponseToServer(contato_from.getToken(), "r:" + message);
+            }
+            // [END_EXCLUDE]
+        }
     }
     // [END receive_message]
 
@@ -120,6 +166,7 @@ public class MyGcmListenerService extends GcmListenerService {
      *
      * @param message GCM message received.
      */
+
     private void sendNotification(String message) {
         Intent intent = new Intent(this, DroidListaContatos.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
