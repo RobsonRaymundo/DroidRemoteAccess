@@ -79,8 +79,8 @@ public class RegistrationIntentService extends IntentService {
                 contato_from.setToken(token);
                 contato_from.setDevice(device);
 
-                persintencia.InserirContato(contato_from);
                 sendRegistrationToServer(contato_from, "", message);
+                persintencia.InserirContato(contato_from);
             }
             else
             {
