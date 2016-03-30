@@ -60,6 +60,11 @@
             android:theme="@style/TranslucentTheme"
             android:label="@string/app_name"></activity>
 
+        <activity
+            android:name=".gdrive.CreateFileMensageActivity"
+            android:theme="@style/TranslucentTheme"
+            android:label="@string/app_name"></activity>
+
         <!-- [START gcm_receiver] -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -95,6 +100,13 @@
             android:exported="false"></service>
         <service android:name=".recorder.DroidHeadService"></service>
         <service android:name=".recorder.DroidAudioRecorder"></service>
+        <service
+            android:name=".notification.DroidNotification"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"></action>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

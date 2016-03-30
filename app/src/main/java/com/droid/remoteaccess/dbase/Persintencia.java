@@ -23,13 +23,15 @@ public class Persintencia extends SQLiteOpenHelper {
     //public static final String BANCO = "/storage/extSdCard/BancoDados/contatosdbase.db3";
     public static final String BANCO = GetPathStorage() + "remoteAccess.db3";
 
-    public static final int VERSAO = 15;
+    public static final int VERSAO = 20;
     //
-    public static final String TABELA = "contatos";
+    public static final String CONTATOS = "contatos";
+    public static final String MENSAGENS = "mensagens";
 
     public static final String EMAIL = "email";
     public static final String TOKEN = "token";
     public static final String DEVICE = "device";
+    public static final String MENSAGEM = "mensagem";
 
     public Persintencia(Context context) {
         super(context, BANCO, null, VERSAO);
@@ -90,14 +92,12 @@ public class Persintencia extends SQLiteOpenHelper {
 
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-
+    private void CreateTabelaContatos(SQLiteDatabase db)
+    {
         StringBuilder stringBuilder = new StringBuilder();       //
 
 
-        stringBuilder.append("CREATE TABLE IF NOT EXISTS [" + TABELA + "] (\n" +
+        stringBuilder.append("CREATE TABLE IF NOT EXISTS [" + CONTATOS + "] (\n" +
                 "  [email] CHAR(100) NOT NULL, \n" +
                 "  [token] CHAR(200) NOT NULL, \n" +
                 "  [device] CHAR(100));\n" +
@@ -106,9 +106,28 @@ public class Persintencia extends SQLiteOpenHelper {
         db.execSQL(stringBuilder.toString());
     }
 
+    private void CreateTabelaMensagens(SQLiteDatabase db) {
+
+        StringBuilder stringBuilder = new StringBuilder();       //
+
+        stringBuilder.append("CREATE TABLE IF NOT EXISTS [" + MENSAGENS + "] (\n" +
+                "  [email] CHAR(100) NOT NULL, \n" +
+                "  [mensagem] CHAR(1024));\n" +
+                "  CONSTRAINT [] FOREIGN KEY ([email])); ");
+        //
+        db.execSQL(stringBuilder.toString());
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        CreateTabelaContatos(db);
+        CreateTabelaMensagens(db);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABELA + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + CONTATOS + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + MENSAGENS + ";");
         //
         onCreate(db);
     }
@@ -120,11 +139,8 @@ public class Persintencia extends SQLiteOpenHelper {
         cv.put(TOKEN, contato.getToken());
         cv.put(DEVICE, contato.getDevice());
         //
-        getWritableDatabase().insert(TABELA, null, cv);
+        getWritableDatabase().insert(CONTATOS, null, cv);
     }
-
-    ;
-
 
     public void InserirContato(Contato contato) {
         if (contatoCadastrado(contato.getEmail())) {
@@ -133,6 +149,50 @@ public class Persintencia extends SQLiteOpenHelper {
             inserirContato(contato);
         }
     }
+
+    private boolean JaExisteMensagem(String email, String mensagem)
+    {
+        boolean cadastrado = false;
+        //
+        Cursor cursor = null;
+        //
+        try {
+            String[] argumentos = new String[]{email, mensagem};
+            //
+            StringBuilder sb = new StringBuilder();
+            sb.append("SELECT * FROM " + MENSAGENS + " WHERE email = ? AND mensagem = ? ");
+            //
+            cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
+            //
+
+            cadastrado = cursor.getCount() > 0;
+
+        } catch (Exception e) {
+            Log.d("DBase", e.getMessage());
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+        //
+        return cadastrado;
+
+    }
+
+    public void InserirMensagens (String email, String mensagem) {
+
+        if (!JaExisteMensagem(email, mensagem)) {
+            ContentValues cv = new ContentValues();
+            //
+            cv.put(EMAIL, email);
+            cv.put(MENSAGEM, mensagem);
+            //
+            getWritableDatabase().insert(MENSAGENS, null, cv);
+        }
+    }
+
 
     public boolean contatoCadastrado(String email) {
         boolean cadastrado = false;
@@ -143,7 +203,7 @@ public class Persintencia extends SQLiteOpenHelper {
             String[] argumentos = new String[]{email};
             //
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM " + TABELA + " WHERE email = ?");
+            sb.append("SELECT * FROM " + CONTATOS + " WHERE email = ?");
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
             //
@@ -172,15 +232,49 @@ public class Persintencia extends SQLiteOpenHelper {
         cv.put(TOKEN, contato.getToken());
         cv.put(DEVICE, contato.getDevice());
         //
-        getWritableDatabase().update(TABELA, cv, FILTRO, argumentos);
+        getWritableDatabase().update(CONTATOS, cv, FILTRO, argumentos);
     }
 
     public void apagarContato(String email) {
         String[] argumentos = new String[]{email};
         String FILTRO = EMAIL + " = ?";
         //
-        getWritableDatabase().delete(TABELA, FILTRO, argumentos);
+        getWritableDatabase().delete(CONTATOS, FILTRO, argumentos);
+        getWritableDatabase().delete(MENSAGENS, FILTRO, argumentos);
     }
+
+    public StringBuilder obterMensagens(String email) {
+        StringBuilder sAux = new StringBuilder();
+        //
+        Cursor cursor = null;
+        //
+        try {
+            String[] argumentos = new String[]{email};
+            //
+            StringBuilder sb = new StringBuilder();
+            sb.append("SELECT * FROM " + MENSAGENS + " WHERE email = ?");
+            //
+            cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
+            //
+            while (cursor.moveToNext()) {
+                sAux.append(cursor.getString(cursor.getColumnIndex(MENSAGEM)));
+                sAux.append("\n");
+            }
+
+
+        } catch (Exception e) {
+            Log.d("DBase", e.getMessage());
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+        //
+        return sAux;
+    }
+
 
     public Contato obterContato(String email) {
         Contato cAux = null;
@@ -191,7 +285,7 @@ public class Persintencia extends SQLiteOpenHelper {
             String[] argumentos = new String[]{email};
             //
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM " + TABELA + " WHERE email = ?");
+            sb.append("SELECT * FROM " + CONTATOS + " WHERE email = ?");
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
             //
@@ -224,7 +318,7 @@ public class Persintencia extends SQLiteOpenHelper {
         //
         try {
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " ORDER BY " + EMAIL);
+            sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + CONTATOS + " ORDER BY " + EMAIL);
             //sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " WHERE " + EMAIL + " != " + "'" + email + "'" + " ORDER BY " + EMAIL);
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), null);

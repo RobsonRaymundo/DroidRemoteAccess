@@ -20,6 +20,7 @@ public class Constantes {
     public static final String RECEIVERRESPONSE = "receiverResponse";
 
 
+
     public static enum EnumTypeViewCam
     {
         FacingBack,

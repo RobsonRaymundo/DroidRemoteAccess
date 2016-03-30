@@ -66,6 +66,8 @@ public class DroidRegistro extends AppCompatActivity {
         mInformationTextView = (TextView) findViewById(R.id.informationTextView);
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
 
+
+
         ll_registro = (LinearLayout) findViewById(R.id.telaregistro_ll_registro);
         rl_aguarde = (LinearLayout) findViewById(R.id.telaregistro_rl_aguarde);
 
@@ -97,6 +99,7 @@ public class DroidRegistro extends AppCompatActivity {
 
                     ChamaListaContatos();
                     Toast.makeText(context, getString(R.string.gcm_send_message), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
 
 
                 } else {
@@ -139,6 +142,7 @@ public class DroidRegistro extends AppCompatActivity {
                 // Start IntentService to register this application with GCM.
                 Intent intent = new Intent(DroidRegistro.this, RegistrationIntentService.class);
                 startService(intent);
+
 
             }
         }

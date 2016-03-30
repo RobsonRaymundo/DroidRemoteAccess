@@ -29,6 +29,7 @@ public class DroidControleRemoto extends AppCompatActivity {
     private Button btn_gravar_audio;
     private Button btn_parar_audio;
     private Button btn_enviar_audio;
+    private Button btn_mensagens;
     private Persintencia persintencia;
     private Contato contato;
     private String token;
@@ -102,6 +103,14 @@ public class DroidControleRemoto extends AppCompatActivity {
             }
         });
 
+        btn_mensagens = (Button) findViewById(R.id.btn_mensagens);
+        btn_mensagens.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EnviarMensagem("m", btn_mensagens);
+            }
+        });
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constantes.RECEIVERRESPONSE);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
@@ -143,6 +152,10 @@ public class DroidControleRemoto extends AppCompatActivity {
         else if (message.contentEquals("r:vr"))
         {
             btn_gravar_video.setEnabled(true);
+        }
+        else if (message.contentEquals("r:m"))
+        {
+            btn_mensagens.setEnabled(true);
         }
 
     }
