@@ -30,7 +30,9 @@ import com.droid.remoteaccess.feature.Contato;
 import com.droid.remoteaccess.dbase.Persintencia;
 import com.droid.remoteaccess.R;
 import com.droid.remoteaccess.activitys.DroidListaContatos;
+import com.droid.remoteaccess.feature.Localizacao;
 import com.droid.remoteaccess.gdrive.CreateFileActivity;
+import com.droid.remoteaccess.location.DroidLocation;
 import com.droid.remoteaccess.others.Methods;
 import com.droid.remoteaccess.recorder.DroidAudioRecorder;
 import com.droid.remoteaccess.recorder.DroidHeadService;
@@ -52,7 +54,7 @@ public class MyGcmListenerService extends GcmListenerService {
     //}
 
 
-    private void sendResponseToServer(String token_to, String message) {
+    private void sendResponseToServer(String token_to, String message, Localizacao localizacao) {
 
         try {
 
@@ -61,7 +63,13 @@ public class MyGcmListenerService extends GcmListenerService {
             JSONObject jData = new JSONObject();
 
             if (message != null && !message.isEmpty()) {
-                jData.put("message", message);
+                jData.put(Constantes.MESSAGE, message);
+            }
+
+            if (localizacao != null)
+            {
+                jData.put(Constantes.LATITUDE, String.valueOf(localizacao.getLatitude()));
+                jData.put(Constantes.LONGITUDE, String.valueOf(localizacao.getLongitude()));
             }
 
             jGcmData.put("to", token_to); // para um aparelho especifico
@@ -109,7 +117,7 @@ public class MyGcmListenerService extends GcmListenerService {
         String email_from = data.getString(Constantes.EMAIL_FROM);
         String token_from = data.getString(Constantes.TOKEN_FROM);
         String device_from = data.getString(Constantes.DEVICE_FROM);
-        String message = data.getString("message");
+        String message = data.getString(Constantes.MESSAGE);
 
         //sendNotification(message);
 
@@ -128,6 +136,12 @@ public class MyGcmListenerService extends GcmListenerService {
                 mIntent.setAction(Constantes.RECEIVERRESPONSE);
                 mIntent.addCategory(Intent.CATEGORY_DEFAULT);
                 mIntent.putExtra(Constantes.MESSAGE, message);
+
+                if (message.equalsIgnoreCase("r:l"))
+                {
+                    mIntent.putExtra(Constantes.LATITUDE, data.getString(Constantes.LATITUDE));
+                    mIntent.putExtra(Constantes.LONGITUDE, data.getString(Constantes.LONGITUDE));
+                }
                 //
                 sendBroadcast(mIntent);
             } else {
@@ -152,14 +166,21 @@ public class MyGcmListenerService extends GcmListenerService {
                     Intent mIntent = new Intent(getBaseContext(), CreateFileActivity.class);
                     mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
                     mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    if (message.equalsIgnoreCase("um"))
-                    {
+                    if (message.equalsIgnoreCase("um")) {
                         StringBuilder sb = persintencia.obterMensagens(Methods.getEmail(getBaseContext()));
                         mIntent.putExtra(Constantes.MESSAGE, sb.toString());
                     }
                     startActivity(mIntent);
                 }
-                sendResponseToServer(contato_from.getToken(), "r:" + message);
+
+                if (message.startsWith("l")) {
+                    Localizacao localizacao = DroidLocation.MyLocation(getBaseContext());
+                    sendResponseToServer(contato_from.getToken(), "r:" + message, localizacao);
+
+                } else {
+
+                    sendResponseToServer(contato_from.getToken(), "r:" + message, null);
+                }
             }
             // [END_EXCLUDE]
         }
@@ -171,6 +192,8 @@ public class MyGcmListenerService extends GcmListenerService {
      *
      * @param message GCM message received.
      */
+
+
 
     private void sendNotification(String message) {
         Intent intent = new Intent(this, DroidListaContatos.class);

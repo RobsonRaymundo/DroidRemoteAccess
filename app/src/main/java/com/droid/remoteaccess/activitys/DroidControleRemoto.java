@@ -4,8 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +19,10 @@ import com.droid.remoteaccess.feature.Constantes;
 import com.droid.remoteaccess.feature.Contato;
 import com.droid.remoteaccess.dbase.Persintencia;
 import com.droid.remoteaccess.R;
+import com.droid.remoteaccess.feature.Localizacao;
 import com.droid.remoteaccess.services.RegistrationIntentService;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by Robson on 06/03/2016.
@@ -23,6 +31,8 @@ public class DroidControleRemoto extends AppCompatActivity {
 
     private Context context;
     private TextView tv_controlando;
+    private TextView tv_latitude;
+    private TextView tv_longitude;
     private Button btn_gravar_video;
     private Button btn_parar_video;
     private Button btn_enviar_video;
@@ -30,12 +40,13 @@ public class DroidControleRemoto extends AppCompatActivity {
     private Button btn_parar_audio;
     private Button btn_enviar_audio;
     private Button btn_mensagens;
+    private Button btn_localizacao;
+
     private Persintencia persintencia;
     private Contato contato;
     private String token;
     private String emailFrom;
     private String emailTo;
-
     private ReceiverResponse receiver;
 
     public DroidControleRemoto() {
@@ -48,6 +59,8 @@ public class DroidControleRemoto extends AppCompatActivity {
 
         context = getBaseContext();
         tv_controlando = (TextView) findViewById(R.id.telacontroleremoto_tv_controlando);
+        tv_latitude = (TextView) findViewById(R.id.telacontroleremoto_tv_latitude);
+        tv_longitude = (TextView) findViewById(R.id.telacontroleremoto_tv_Longitude);
         emailFrom = getIntent().getStringExtra(Constantes.EMAIL_FROM);
         emailTo = getIntent().getStringExtra(Constantes.EMAIL_TO);
         tv_controlando.setText(emailTo);
@@ -111,6 +124,14 @@ public class DroidControleRemoto extends AppCompatActivity {
             }
         });
 
+        btn_localizacao = (Button) findViewById(R.id.btn_localizacao);
+        btn_localizacao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EnviarMensagem("l", btn_localizacao);
+            }
+        });
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constantes.RECEIVERRESPONSE);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
@@ -157,6 +178,10 @@ public class DroidControleRemoto extends AppCompatActivity {
         {
             btn_mensagens.setEnabled(true);
         }
+        else if (message.contentEquals("r:l"))
+        {
+            btn_localizacao.setEnabled(true);
+        }
 
     }
 
@@ -181,11 +206,31 @@ public class DroidControleRemoto extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra(Constantes.MESSAGE);
+            if (message.contentEquals("r:l"))
+            {
+                //tv_latitude.setText(String.valueOf(intent.getDoubleExtra(Constantes.LATITUDE, 0.0)));
+                //tv_longitude.setText(String.valueOf(intent.getDoubleExtra(Constantes.LONGITUDE, 0.0)));
+
+                String latitude = intent.getStringExtra(Constantes.LATITUDE);
+                String longitude = intent.getStringExtra(Constantes.LONGITUDE);
+                tv_latitude.setText(latitude);
+                tv_longitude.setText(longitude);
+
+                //
+                String uri = "geo:0,0?q=" +
+                        latitude.replace(",", ".").trim() +
+                        "," +
+                        longitude.replace(",", ".").trim();
+                //
+                Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(mIntent);
+
+
+
+            }
             EnabledButton(message);
+
         }
     }
-
-
-
 }
 

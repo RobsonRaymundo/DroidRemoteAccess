@@ -22,48 +22,112 @@
         android:text="Controlando : "
         android:textSize="15sp" />
 
-    <Button
-        android:id="@+id/btn_gravar_video"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Gravar Video"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:textSize="11sp"
+            android:id="@+id/btn_gravar_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gravar Video"/>
+
+        <Button
+            android:textSize="11sp"
+            android:id="@+id/btn_parar_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parar Video"/>
+
+        <Button
+            android:textSize="11sp"
+            android:id="@+id/btn_enviar_video"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"
+            android:text="Enviar Video"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <Button
+            android:textSize="11sp"
+            android:id="@+id/btn_gravar_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gravar Audio"/>
+
+        <Button
+            android:textSize="11sp"
+            android:id="@+id/btn_parar_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parar Audio"/>
+
+        <Button
+            android:textSize="12sp"
+            android:id="@+id/btn_enviar_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Enviar Audio"/>
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/btn_parar_video"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Parar Video"/>
-
-    <Button
-        android:id="@+id/btn_enviar_video"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="30dp"
-        android:layout_height="wrap_content"
-        android:text="Enviar Video"/>
-
-    <Button
-        android:id="@+id/btn_gravar_audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Gravar Audio"/>
-
-    <Button
-        android:id="@+id/btn_parar_audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Parar Audio"/>
-
-    <Button
-        android:id="@+id/btn_enviar_audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enviar Audio"/>
-
-    <Button
+        android:textSize="11sp"
         android:id="@+id/btn_mensagens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:text="Mensagens"/>
+
+    <Button
+        android:textSize="11sp"
+        android:id="@+id/btn_localizacao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Localização"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:text="Lat:" />
+
+    <TextView
+        android:id="@+id/telacontroleremoto_tv_latitude"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0" />
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Long:" />
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/telacontroleremoto_tv_Longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0" />
+    </LinearLayout>
+
 
 
 </LinearLayout>
