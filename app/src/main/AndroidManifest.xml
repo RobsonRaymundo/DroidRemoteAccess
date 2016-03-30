@@ -60,11 +60,6 @@
             android:theme="@style/TranslucentTheme"
             android:label="@string/app_name"></activity>
 
-        <activity
-            android:name=".gdrive.CreateFileMensageActivity"
-            android:theme="@style/TranslucentTheme"
-            android:label="@string/app_name"></activity>
-
         <!-- [START gcm_receiver] -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"

@@ -31,7 +31,6 @@ import com.droid.remoteaccess.dbase.Persintencia;
 import com.droid.remoteaccess.R;
 import com.droid.remoteaccess.activitys.DroidListaContatos;
 import com.droid.remoteaccess.gdrive.CreateFileActivity;
-import com.droid.remoteaccess.gdrive.CreateFileMensageActivity;
 import com.droid.remoteaccess.others.Methods;
 import com.droid.remoteaccess.recorder.DroidAudioRecorder;
 import com.droid.remoteaccess.recorder.DroidHeadService;
@@ -153,16 +152,12 @@ public class MyGcmListenerService extends GcmListenerService {
                     Intent mIntent = new Intent(getBaseContext(), CreateFileActivity.class);
                     mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
                     mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if (message.equalsIgnoreCase("um"))
+                    {
+                        StringBuilder sb = persintencia.obterMensagens(Methods.getEmail(getBaseContext()));
+                        mIntent.putExtra(Constantes.MESSAGE, sb.toString());
+                    }
                     startActivity(mIntent);
-                } else if (message.startsWith("m")) {
-                    StringBuilder sb = persintencia.obterMensagens(Methods.getEmail(getBaseContext()));
-                    Intent mIntent = new Intent(getBaseContext(), CreateFileMensageActivity.class);
-                    mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, sb.toString());
-                    mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(mIntent);
-
-                    //sendNotification(sb.toString());
-
                 }
                 sendResponseToServer(contato_from.getToken(), "r:" + message);
             }

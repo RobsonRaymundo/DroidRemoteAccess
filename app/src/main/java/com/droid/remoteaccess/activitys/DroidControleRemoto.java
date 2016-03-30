@@ -107,7 +107,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         btn_mensagens.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnviarMensagem("m", btn_mensagens);
+                EnviarMensagem("um", btn_mensagens);
             }
         });
 
@@ -153,7 +153,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         {
             btn_gravar_video.setEnabled(true);
         }
-        else if (message.contentEquals("r:m"))
+        else if (message.contentEquals("r:um"))
         {
             btn_mensagens.setEnabled(true);
         }
