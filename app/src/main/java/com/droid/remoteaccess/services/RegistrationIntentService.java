@@ -80,12 +80,17 @@ public class RegistrationIntentService extends IntentService {
                 contato_from.setDevice(device);
 
                 sendRegistrationToServer(contato_from, "", message);
-                persintencia.InserirContato(contato_from);
+                if (persintencia.JaExisteContatoCadastrado(contato_from.getEmail())) {
+                    persintencia.AtualizarContato(contato_from);
+                }
+                else {
+                    persintencia.InserirContato(contato_from);
+                }
             }
             else
             {
-                contato_from = persintencia.obterContato(email_from);
-                contato_to = persintencia.obterContato(email_to);
+                contato_from = persintencia.ObterContato(email_from);
+                contato_to = persintencia.ObterContato(email_to);
                 token = contato_to.getToken();
                 sendRegistrationToServer(contato_from, token, message);
             }

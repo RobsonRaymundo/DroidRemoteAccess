@@ -17,7 +17,8 @@ public class Constantes {
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    public static final String RECEIVERRESPONSE = "receiverResponse";
+    public static final String RECEIVERRESPONSELISTACONTATOS = "receiverResponseListaContatos";
+    public static final String RECEIVERRESPONSECONTROLEREMOTO = "receiverResponseControleRemoto";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
 

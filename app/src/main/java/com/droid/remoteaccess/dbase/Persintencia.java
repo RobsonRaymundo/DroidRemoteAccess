@@ -132,7 +132,7 @@ public class Persintencia extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    private void inserirContato(Contato contato) {
+    public void InserirContato(Contato contato) {
         ContentValues cv = new ContentValues();
         //
         cv.put(EMAIL, contato.getEmail());
@@ -142,13 +142,6 @@ public class Persintencia extends SQLiteOpenHelper {
         getWritableDatabase().insert(CONTATOS, null, cv);
     }
 
-    public void InserirContato(Contato contato) {
-        if (contatoCadastrado(contato.getEmail())) {
-            atualizarContato(contato);
-        } else {
-            inserirContato(contato);
-        }
-    }
 
     private boolean JaExisteMensagem(String email, String mensagem)
     {
@@ -194,7 +187,7 @@ public class Persintencia extends SQLiteOpenHelper {
     }
 
 
-    public boolean contatoCadastrado(String email) {
+    public boolean JaExisteContatoCadastrado(String email) {
         boolean cadastrado = false;
         //
         Cursor cursor = null;
@@ -223,7 +216,7 @@ public class Persintencia extends SQLiteOpenHelper {
         return cadastrado;
     }
 
-    private void atualizarContato(Contato contato) {
+    public void AtualizarContato(Contato contato) {
         ContentValues cv = new ContentValues();
         //
         String[] argumentos = new String[]{contato.getEmail()};
@@ -235,7 +228,7 @@ public class Persintencia extends SQLiteOpenHelper {
         getWritableDatabase().update(CONTATOS, cv, FILTRO, argumentos);
     }
 
-    public void apagarContato(String email) {
+    public void ApagarContato(String email) {
         String[] argumentos = new String[]{email};
         String FILTRO = EMAIL + " = ?";
         //
@@ -243,7 +236,7 @@ public class Persintencia extends SQLiteOpenHelper {
         getWritableDatabase().delete(MENSAGENS, FILTRO, argumentos);
     }
 
-    public StringBuilder obterMensagens(String email) {
+    public StringBuilder ObterMensagens(String email) {
         StringBuilder sAux = new StringBuilder();
         //
         Cursor cursor = null;
@@ -276,7 +269,7 @@ public class Persintencia extends SQLiteOpenHelper {
     }
 
 
-    public Contato obterContato(String email) {
+    public Contato ObterContato(String email) {
         Contato cAux = null;
         //
         Cursor cursor = null;

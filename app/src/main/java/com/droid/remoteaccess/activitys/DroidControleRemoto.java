@@ -47,7 +47,7 @@ public class DroidControleRemoto extends AppCompatActivity {
     private String token;
     private String emailFrom;
     private String emailTo;
-    private ReceiverResponse receiver;
+    private ReceiverResponseControleRemoto receiver;
 
     public DroidControleRemoto() {
     }
@@ -65,7 +65,7 @@ public class DroidControleRemoto extends AppCompatActivity {
         emailTo = getIntent().getStringExtra(Constantes.EMAIL_TO);
         tv_controlando.setText(emailTo);
         persintencia = new Persintencia(getBaseContext());
-        Contato contato = persintencia.obterContato(emailTo);
+        Contato contato = persintencia.ObterContato(emailTo);
         token = contato.getToken();
 
         btn_gravar_video = (Button) findViewById(R.id.btn_gravar_video);
@@ -133,10 +133,10 @@ public class DroidControleRemoto extends AppCompatActivity {
         });
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constantes.RECEIVERRESPONSE);
+        filter.addAction(Constantes.RECEIVERRESPONSECONTROLEREMOTO);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         //
-        receiver = new ReceiverResponse();
+        receiver = new ReceiverResponseControleRemoto();
         //
         registerReceiver(receiver, filter);
 
@@ -200,7 +200,7 @@ public class DroidControleRemoto extends AppCompatActivity {
 
     }
 
-    public class ReceiverResponse extends BroadcastReceiver
+    public class ReceiverResponseControleRemoto extends BroadcastReceiver
     {
 
         @Override
@@ -224,9 +224,6 @@ public class DroidControleRemoto extends AppCompatActivity {
                 //
                 Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 startActivity(mIntent);
-
-
-
             }
             EnabledButton(message);
 

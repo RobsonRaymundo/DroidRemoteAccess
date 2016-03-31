@@ -126,14 +126,25 @@ public class MyGcmListenerService extends GcmListenerService {
         contato_from.setEmail(email_from);
         contato_from.setToken(token_from);
         contato_from.setDevice(device_from);
-        persintencia.InserirContato(contato_from);
+        //persintencia.InserirContato(contato_from);
+
+        if (persintencia.JaExisteContatoCadastrado(contato_from.getEmail())) {
+            persintencia.AtualizarContato(contato_from);
+        } else {
+            persintencia.InserirContato(contato_from);
+            Intent mIntent = new Intent();
+            mIntent.setAction(Constantes.RECEIVERRESPONSELISTACONTATOS);
+            mIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            mIntent.putExtra(Constantes.MESSAGE, "refresh");
+            sendBroadcast(mIntent);
+        }
 
         if (message != null) {
             if (message.startsWith("r:")) {
                 //sendNotification(message);
 
                 Intent mIntent = new Intent();
-                mIntent.setAction(Constantes.RECEIVERRESPONSE);
+                mIntent.setAction(Constantes.RECEIVERRESPONSECONTROLEREMOTO);
                 mIntent.addCategory(Intent.CATEGORY_DEFAULT);
                 mIntent.putExtra(Constantes.MESSAGE, message);
 
@@ -167,7 +178,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
                     mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if (message.equalsIgnoreCase("um")) {
-                        StringBuilder sb = persintencia.obterMensagens(Methods.getEmail(getBaseContext()));
+                        StringBuilder sb = persintencia.ObterMensagens(Methods.getEmail(getBaseContext()));
                         mIntent.putExtra(Constantes.MESSAGE, sb.toString());
                     }
                     startActivity(mIntent);
@@ -178,7 +189,6 @@ public class MyGcmListenerService extends GcmListenerService {
                     sendResponseToServer(contato_from.getToken(), "r:" + message, localizacao);
 
                 } else {
-
                     sendResponseToServer(contato_from.getToken(), "r:" + message, null);
                 }
             }

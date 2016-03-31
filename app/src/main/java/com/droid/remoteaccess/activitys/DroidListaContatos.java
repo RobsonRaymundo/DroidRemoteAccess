@@ -1,7 +1,10 @@
 package com.droid.remoteaccess.activitys;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -27,6 +30,7 @@ public class DroidListaContatos extends AppCompatActivity {
     private ListView lv_contatos;
     private Persintencia persintencia;
     private Contato contato;
+    private ReceiverResponseListaContatos receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class DroidListaContatos extends AppCompatActivity {
         lv_contatos = (ListView) findViewById(R.id.telalistacontatos__lv_contatos);
         persintencia = new Persintencia(context);
 
-        contato = persintencia.obterContato(Methods.getEmail(context));
+        contato = persintencia.ObterContato(Methods.getEmail(context));
         tv_nomeAparelho.setText(contato.getEmail());
 
         atualizaAdapterContatos();
@@ -52,7 +56,7 @@ public class DroidListaContatos extends AppCompatActivity {
                 //chamarDetalhes(Long.parseLong(item.get(HMContato.EMAIL)));
                 //
 
-                persintencia.apagarContato(item.get(HMContato.EMAIL));
+                persintencia.ApagarContato(item.get(HMContato.EMAIL));
                 Methods.showMessage(DroidListaContatos.this, "Registro apagado");
                 atualizaAdapterContatos();
                 return true;
@@ -69,6 +73,20 @@ public class DroidListaContatos extends AppCompatActivity {
             }
         });
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constantes.RECEIVERRESPONSELISTACONTATOS);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+
+        receiver = new ReceiverResponseListaContatos();
+        //
+        registerReceiver(receiver, filter);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     private void atualizaAdapterContatos() {
@@ -87,5 +105,20 @@ public class DroidListaContatos extends AppCompatActivity {
                 new SimpleAdapter(context, persintencia.listaContatos(Methods.getEmail(context)), R.layout.celula, from, to)
 
         );
+    }
+
+
+    public class ReceiverResponseListaContatos extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(Constantes.MESSAGE);
+            if (message.contentEquals("refresh"))
+            {
+                atualizaAdapterContatos();
+            }
+
+        }
     }
 }
