@@ -23,7 +23,6 @@ public class Persintencia extends SQLiteOpenHelper {
     //public static final String BANCO = "/storage/extSdCard/BancoDados/contatosdbase.db3";
     public static final String BANCO = GetPathStorage() + "remoteAccess.db3";
 
-    public static final int VERSAO = 30;
     //
     public static final String CONTATOS = "contatos";
     public static final String MENSAGENS = "mensagens";
