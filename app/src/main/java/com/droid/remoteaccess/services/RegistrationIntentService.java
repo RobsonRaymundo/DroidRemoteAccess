@@ -60,27 +60,29 @@ public class RegistrationIntentService extends IntentService {
             Contato contato_from = new Contato();
             Contato contato_to = new Contato();
 
-            String email_from = intent.getStringExtra(Constantes.EMAIL_FROM);
-            String email_to = intent.getStringExtra(Constantes.EMAIL_TO);
+            String id_from = intent.getStringExtra(Constantes.ID_FROM);
+            String id_to = intent.getStringExtra(Constantes.ID_TO);
             String message = intent.getStringExtra("message");
 
             String token = "";
 
-            if (email_from == null || email_from.isEmpty())
+            if (id_from == null || id_from.isEmpty())
             {
-                email_from = Methods.getEmail(context);
+                id_from = Methods.getIDDevice(context);
+                String email = Methods.getEmail(context);
                 String device = Methods.getNameDevice(context);
                 InstanceID instanceID = InstanceID.getInstance(this);
                 token = instanceID.getToken(Constantes.SENDER_ID,
                         GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
                 Log.i(TAG, "GCM Registration Token: " + token);
 
-                contato_from.setEmail(email_from);
+                contato_from.setId(id_from);
+                contato_from.setEmail(email);
                 contato_from.setToken(token);
                 contato_from.setDevice(device);
 
                 sendRegistrationToServer(contato_from, "", message);
-                if (persintencia.JaExisteContatoCadastrado(contato_from.getEmail())) {
+                if (persintencia.JaExisteContatoCadastrado(contato_from.getId())) {
                     persintencia.AtualizarContato(contato_from);
                 }
                 else {
@@ -89,8 +91,8 @@ public class RegistrationIntentService extends IntentService {
             }
             else
             {
-                contato_from = persintencia.ObterContato(email_from);
-                contato_to = persintencia.ObterContato(email_to);
+                contato_from = persintencia.ObterContato(id_from);
+                contato_to = persintencia.ObterContato(id_to);
                 token = contato_to.getToken();
                 sendRegistrationToServer(contato_from, token, message);
             }
@@ -111,6 +113,7 @@ public class RegistrationIntentService extends IntentService {
         JSONObject jGcmData = new JSONObject();
         JSONObject jData = new JSONObject();
 
+        jData.put(Constantes.ID_FROM, contato_from.getId());
         jData.put(Constantes.EMAIL_FROM, contato_from.getEmail());
         jData.put(Constantes.TOKEN_FROM, contato_from.getToken());
         jData.put(Constantes.DEVICE_FROM, contato_from.getDevice());

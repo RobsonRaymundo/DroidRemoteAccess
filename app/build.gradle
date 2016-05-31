@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 22
     buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.droid.remoteaccess"
         minSdkVersion 17
-        targetSdkVersion 22
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
@@ -22,12 +22,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    // Testing dependencies
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
-
-    androidTestCompile 'com.android.support:support-annotations:23.1.1'
+    compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'com.google.android.gms:play-services-drive:8.4.0'
     compile 'com.google.android.gms:play-services-identity:8.4.0'

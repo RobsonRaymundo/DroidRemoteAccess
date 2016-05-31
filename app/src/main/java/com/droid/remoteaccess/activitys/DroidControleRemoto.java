@@ -45,8 +45,8 @@ public class DroidControleRemoto extends AppCompatActivity {
     private Persintencia persintencia;
     private Contato contato;
     private String token;
-    private String emailFrom;
-    private String emailTo;
+    private String idFrom;
+    private String idTo;
     private ReceiverResponseControleRemoto receiver;
 
     public DroidControleRemoto() {
@@ -61,12 +61,13 @@ public class DroidControleRemoto extends AppCompatActivity {
         tv_controlando = (TextView) findViewById(R.id.telacontroleremoto_tv_controlando);
         tv_latitude = (TextView) findViewById(R.id.telacontroleremoto_tv_latitude);
         tv_longitude = (TextView) findViewById(R.id.telacontroleremoto_tv_Longitude);
-        emailFrom = getIntent().getStringExtra(Constantes.EMAIL_FROM);
-        emailTo = getIntent().getStringExtra(Constantes.EMAIL_TO);
-        tv_controlando.setText(emailTo);
+        idFrom = getIntent().getStringExtra(Constantes.ID_FROM);
+        idTo = getIntent().getStringExtra(Constantes.ID_TO);
+
         persintencia = new Persintencia(getBaseContext());
-        Contato contato = persintencia.ObterContato(emailTo);
+        Contato contato = persintencia.ObterContato(idTo);
         token = contato.getToken();
+        tv_controlando.setText(contato.getEmail());
 
         btn_gravar_video = (Button) findViewById(R.id.btn_gravar_video);
         btn_gravar_video.setOnClickListener(new View.OnClickListener() {
@@ -189,8 +190,8 @@ public class DroidControleRemoto extends AppCompatActivity {
     {
         try {
             Intent intent = new Intent(DroidControleRemoto.this, RegistrationIntentService.class);
-            intent.putExtra(Constantes.EMAIL_FROM, emailFrom);
-            intent.putExtra(Constantes.EMAIL_TO, emailTo);
+            intent.putExtra(Constantes.ID_FROM, idFrom);
+            intent.putExtra(Constantes.ID_TO, idTo);
             intent.putExtra(Constantes.MESSAGE, message);
             startService(intent);
             btn.setEnabled(false);

@@ -42,7 +42,7 @@ public class DroidListaContatos extends AppCompatActivity {
         lv_contatos = (ListView) findViewById(R.id.telalistacontatos__lv_contatos);
         persintencia = new Persintencia(context);
 
-        contato = persintencia.ObterContato(Methods.getEmail(context));
+        contato = persintencia.ObterContato(Methods.getIDDevice(context));
         tv_nomeAparelho.setText(contato.getEmail());
 
         atualizaAdapterContatos();
@@ -56,7 +56,7 @@ public class DroidListaContatos extends AppCompatActivity {
                 //chamarDetalhes(Long.parseLong(item.get(HMContato.EMAIL)));
                 //
 
-                persintencia.ApagarContato(item.get(HMContato.EMAIL));
+                persintencia.ApagarContato(item.get(HMContato.ID));
                 Methods.showMessage(DroidListaContatos.this, "Registro apagado");
                 atualizaAdapterContatos();
                 return true;
@@ -67,8 +67,8 @@ public class DroidListaContatos extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent mIntent = new Intent(context, DroidControleRemoto.class);
                 HMContato item = (HMContato) parent.getItemAtPosition(position);
-                mIntent.putExtra(Constantes.EMAIL_FROM, contato.getEmail());
-                mIntent.putExtra(Constantes.EMAIL_TO, item.get(HMContato.EMAIL));
+                mIntent.putExtra(Constantes.ID_FROM, contato.getId());
+                mIntent.putExtra(Constantes.ID_TO, item.get(HMContato.ID));
                 startActivity(mIntent);
             }
         });
@@ -102,7 +102,7 @@ public class DroidListaContatos extends AppCompatActivity {
                 //           persintencia.listaContatos()
                 //   )
 
-                new SimpleAdapter(context, persintencia.listaContatos(Methods.getEmail(context)), R.layout.celula, from, to)
+                new SimpleAdapter(context, persintencia.listaContatos(), R.layout.celula, from, to)
 
         );
     }

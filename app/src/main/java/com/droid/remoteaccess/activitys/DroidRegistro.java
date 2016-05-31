@@ -136,7 +136,7 @@ public class DroidRegistro extends AppCompatActivity {
     }
 
     private boolean ContatoCadastrado() {
-        boolean contatoCadastrado = persintencia.JaExisteContatoCadastrado(Methods.getEmail(context));
+        boolean contatoCadastrado = persintencia.JaExisteContatoCadastrado(Methods.getIDDevice(context));
 
         if (!contatoCadastrado) {
             if (Methods.checkPlayServices(DroidRegistro.this)) {

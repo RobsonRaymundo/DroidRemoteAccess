@@ -5,10 +5,18 @@ package com.droid.remoteaccess.feature;
  */
 public class Contato {
 
-
+    private String id;
     private String email;
     private String token;
     private String device;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -36,6 +44,8 @@ public class Contato {
 
     @Override
     public String toString() {
-        return this.email;
+        return this.id;
     }
+
+
 }

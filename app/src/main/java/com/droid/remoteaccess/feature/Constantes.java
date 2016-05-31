@@ -8,6 +8,8 @@ public class Constantes {
     public static final String TAG = "DRA";
     public static final String API_KEY = "AIzaSyDUq4PHwLRombR8xPjzsSURWZ8HfPM98j4";
     public static final String SENDER_ID = "648009425841";
+    public static final String ID_TO = "id_to";
+    public static final String ID_FROM = "id_from";
     public static final String EMAIL_TO = "email_to";
     public static final String EMAIL_FROM = "email_from";
     public static final String TOKEN_FROM = "token_from";

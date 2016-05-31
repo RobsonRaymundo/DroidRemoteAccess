@@ -76,6 +76,14 @@ public class Methods {
         else return "Smartphone Padrao";
     }
 
+    public static String getIDDevice(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return tm.getDeviceId();
+       // }
+       // else return "0000000000";
+    }
+
     public static void showMessage(final Activity activity, String mensagem) {
         AlertDialog.Builder alerta = new AlertDialog.Builder(activity);
         alerta.setMessage(mensagem);

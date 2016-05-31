@@ -114,6 +114,7 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        String id_from = data.getString(Constantes.ID_FROM);
         String email_from = data.getString(Constantes.EMAIL_FROM);
         String token_from = data.getString(Constantes.TOKEN_FROM);
         String device_from = data.getString(Constantes.DEVICE_FROM);
@@ -123,12 +124,13 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Persintencia persintencia = new Persintencia(getBaseContext());
         Contato contato_from = new Contato();
+        contato_from.setId(id_from);
         contato_from.setEmail(email_from);
         contato_from.setToken(token_from);
         contato_from.setDevice(device_from);
         //persintencia.InserirContato(contato_from);
 
-        if (persintencia.JaExisteContatoCadastrado(contato_from.getEmail())) {
+        if (persintencia.JaExisteContatoCadastrado(contato_from.getId())) {
             persintencia.AtualizarContato(contato_from);
         } else {
             persintencia.InserirContato(contato_from);
@@ -178,7 +180,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     mIntent.putExtra(Constantes.CHAMADAPORCOMANDOTEXTO, message);
                     mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if (message.equalsIgnoreCase("um")) {
-                        StringBuilder sb = persintencia.ObterMensagens(Methods.getEmail(getBaseContext()));
+                        StringBuilder sb = persintencia.ObterMensagens(Methods.getIDDevice(getBaseContext()));
                         mIntent.putExtra(Constantes.MESSAGE, sb.toString());
                     }
                     startActivity(mIntent);
