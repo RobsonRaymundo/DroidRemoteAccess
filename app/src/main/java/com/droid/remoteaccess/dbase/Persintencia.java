@@ -23,11 +23,12 @@ public class Persintencia extends SQLiteOpenHelper {
     //public static final String BANCO = "/storage/extSdCard/BancoDados/contatosdbase.db3";
     public static final String BANCO = GetPathStorage() + "remoteAccess.db3";
 
-    public static final int VERSAO = 20;
+    public static final int VERSAO = 30;
     //
     public static final String CONTATOS = "contatos";
     public static final String MENSAGENS = "mensagens";
 
+    public static final String ID = "id";
     public static final String EMAIL = "email";
     public static final String TOKEN = "token";
     public static final String DEVICE = "device";
@@ -98,10 +99,11 @@ public class Persintencia extends SQLiteOpenHelper {
 
 
         stringBuilder.append("CREATE TABLE IF NOT EXISTS [" + CONTATOS + "] (\n" +
+                "  [id] CHAR(20) NOT NULL, \n" +
                 "  [email] CHAR(100) NOT NULL, \n" +
                 "  [token] CHAR(200) NOT NULL, \n" +
                 "  [device] CHAR(100));\n" +
-                "  CONSTRAINT [] PRIMARY KEY ([email])); ");
+                "  CONSTRAINT [] PRIMARY KEY ([id])); ");
         //
         db.execSQL(stringBuilder.toString());
     }
@@ -111,9 +113,10 @@ public class Persintencia extends SQLiteOpenHelper {
         StringBuilder stringBuilder = new StringBuilder();       //
 
         stringBuilder.append("CREATE TABLE IF NOT EXISTS [" + MENSAGENS + "] (\n" +
+                "  [id] CHAR(20) NOT NULL, \n" +
                 "  [email] CHAR(100) NOT NULL, \n" +
                 "  [mensagem] CHAR(1024));\n" +
-                "  CONSTRAINT [] FOREIGN KEY ([email])); ");
+                "  CONSTRAINT [] FOREIGN KEY ([id])); ");
         //
         db.execSQL(stringBuilder.toString());
     }
@@ -135,6 +138,7 @@ public class Persintencia extends SQLiteOpenHelper {
     public void InserirContato(Contato contato) {
         ContentValues cv = new ContentValues();
         //
+        cv.put(ID, contato.getId());
         cv.put(EMAIL, contato.getEmail());
         cv.put(TOKEN, contato.getToken());
         cv.put(DEVICE, contato.getDevice());
@@ -143,17 +147,17 @@ public class Persintencia extends SQLiteOpenHelper {
     }
 
 
-    private boolean JaExisteMensagem(String email, String mensagem)
+    private boolean JaExisteMensagem(String id, String mensagem)
     {
         boolean cadastrado = false;
         //
         Cursor cursor = null;
         //
         try {
-            String[] argumentos = new String[]{email, mensagem};
+            String[] argumentos = new String[]{id, mensagem};
             //
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM " + MENSAGENS + " WHERE email = ? AND mensagem = ? ");
+            sb.append("SELECT * FROM " + MENSAGENS + " WHERE id = ? AND mensagem = ? ");
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
             //
@@ -174,12 +178,12 @@ public class Persintencia extends SQLiteOpenHelper {
 
     }
 
-    public void InserirMensagens (String email, String mensagem) {
+    public void InserirMensagens (String id, String mensagem) {
 
-        if (!JaExisteMensagem(email, mensagem)) {
+        if (!JaExisteMensagem(id, mensagem)) {
             ContentValues cv = new ContentValues();
             //
-            cv.put(EMAIL, email);
+            cv.put(ID, id);
             cv.put(MENSAGEM, mensagem);
             //
             getWritableDatabase().insert(MENSAGENS, null, cv);
@@ -187,16 +191,16 @@ public class Persintencia extends SQLiteOpenHelper {
     }
 
 
-    public boolean JaExisteContatoCadastrado(String email) {
+    public boolean JaExisteContatoCadastrado(String id) {
         boolean cadastrado = false;
         //
         Cursor cursor = null;
         //
         try {
-            String[] argumentos = new String[]{email};
+            String[] argumentos = new String[]{id};
             //
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM " + CONTATOS + " WHERE email = ?");
+            sb.append("SELECT * FROM " + CONTATOS + " WHERE id = ?");
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
             //
@@ -219,8 +223,8 @@ public class Persintencia extends SQLiteOpenHelper {
     public void AtualizarContato(Contato contato) {
         ContentValues cv = new ContentValues();
         //
-        String[] argumentos = new String[]{contato.getEmail()};
-        String FILTRO = EMAIL + " = ?";
+        String[] argumentos = new String[]{contato.getId()};
+        String FILTRO = ID + " = ?";
         //
         cv.put(TOKEN, contato.getToken());
         cv.put(DEVICE, contato.getDevice());
@@ -228,24 +232,24 @@ public class Persintencia extends SQLiteOpenHelper {
         getWritableDatabase().update(CONTATOS, cv, FILTRO, argumentos);
     }
 
-    public void ApagarContato(String email) {
-        String[] argumentos = new String[]{email};
-        String FILTRO = EMAIL + " = ?";
+    public void ApagarContato(String id) {
+        String[] argumentos = new String[]{id};
+        String FILTRO = ID + " = ?";
         //
         getWritableDatabase().delete(CONTATOS, FILTRO, argumentos);
         getWritableDatabase().delete(MENSAGENS, FILTRO, argumentos);
     }
 
-    public StringBuilder ObterMensagens(String email) {
+    public StringBuilder ObterMensagens(String id) {
         StringBuilder sAux = new StringBuilder();
         //
         Cursor cursor = null;
         //
         try {
-            String[] argumentos = new String[]{email};
+            String[] argumentos = new String[]{id};
             //
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM " + MENSAGENS + " WHERE email = ?");
+            sb.append("SELECT * FROM " + MENSAGENS + " WHERE id = ?");
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
             //
@@ -269,16 +273,16 @@ public class Persintencia extends SQLiteOpenHelper {
     }
 
 
-    public Contato ObterContato(String email) {
+    public Contato ObterContato(String id) {
         Contato cAux = null;
         //
         Cursor cursor = null;
         //
         try {
-            String[] argumentos = new String[]{email};
+            String[] argumentos = new String[]{id};
             //
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT * FROM " + CONTATOS + " WHERE email = ?");
+            sb.append("SELECT * FROM " + CONTATOS + " WHERE id = ?");
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), argumentos);
             //
@@ -304,14 +308,14 @@ public class Persintencia extends SQLiteOpenHelper {
         return cAux;
     }
 
-    public ArrayList<HMContato> listaContatos(String email) {
+    public ArrayList<HMContato> listaContatos() {
         ArrayList<HMContato> contatos = new ArrayList<>();
         //
         Cursor cursor = null;
         //
         try {
             StringBuilder sb = new StringBuilder();
-            sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + CONTATOS + " ORDER BY " + EMAIL);
+            sb.append("SELECT " + ID + ","  + EMAIL + ","  +  DEVICE + " FROM " + CONTATOS + " ORDER BY " + EMAIL);
             //sb.append("SELECT " + EMAIL + "," + DEVICE + " FROM " + TABELA + " WHERE " + EMAIL + " != " + "'" + email + "'" + " ORDER BY " + EMAIL);
             //
             cursor = getWritableDatabase().rawQuery(sb.toString(), null);
@@ -319,6 +323,7 @@ public class Persintencia extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 HMContato item = new HMContato();
                 //
+                item.put(HMContato.ID, cursor.getString(cursor.getColumnIndex(ID)));
                 item.put(HMContato.EMAIL, cursor.getString(cursor.getColumnIndex(EMAIL)));
                 item.put(HMContato.DEVICE, cursor.getString(cursor.getColumnIndex(DEVICE)));
                 //
