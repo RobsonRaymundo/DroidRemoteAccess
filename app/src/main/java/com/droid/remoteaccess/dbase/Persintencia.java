@@ -23,6 +23,7 @@ public class Persintencia extends SQLiteOpenHelper {
     //public static final String BANCO = "/storage/extSdCard/BancoDados/contatosdbase.db3";
     public static final String BANCO = GetPathStorage() + "remoteAccess.db3";
 
+    public static final int VERSAO = 31;
     //
     public static final String CONTATOS = "contatos";
     public static final String MENSAGENS = "mensagens";
@@ -288,6 +289,7 @@ public class Persintencia extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 cAux = new Contato();
                 //
+                cAux.setId(cursor.getString(cursor.getColumnIndex(ID)));
                 cAux.setEmail(cursor.getString(cursor.getColumnIndex(EMAIL)));
                 cAux.setToken(cursor.getString(cursor.getColumnIndex(TOKEN)));
                 cAux.setDevice(cursor.getString(cursor.getColumnIndex(DEVICE)));
