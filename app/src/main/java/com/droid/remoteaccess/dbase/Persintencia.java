@@ -178,12 +178,13 @@ public class Persintencia extends SQLiteOpenHelper {
 
     }
 
-    public void InserirMensagens (String id, String mensagem) {
+    public void InserirMensagens (String id, String email, String mensagem) {
 
         if (!JaExisteMensagem(id, mensagem)) {
             ContentValues cv = new ContentValues();
             //
             cv.put(ID, id);
+            cv.put(EMAIL, email);
             cv.put(MENSAGEM, mensagem);
             //
             getWritableDatabase().insert(MENSAGENS, null, cv);

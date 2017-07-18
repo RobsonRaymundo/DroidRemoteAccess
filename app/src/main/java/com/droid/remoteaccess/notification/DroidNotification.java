@@ -27,7 +27,7 @@ public class DroidNotification extends DroidBaseNotification {
 
         if (!msgNotification.isEmpty()) {
             Persintencia persintencia = new Persintencia(context);
-            persintencia.InserirMensagens(Methods.getEmail(context), msgNotification);
+            persintencia.InserirMensagens(Methods.getIDDevice(context), Methods.getEmail(context), msgNotification);
         }
     }
 
