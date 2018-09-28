@@ -1,5 +1,6 @@
 package com.droid.remoteaccess.others;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -8,8 +9,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
@@ -26,6 +29,11 @@ import java.util.regex.Pattern;
  * Created by Robson on 02/03/2016.
  */
 public class Methods {
+
+    public static final String[] PERMISSIONS = {Manifest.permission.READ_CONTACTS, Manifest.permission.READ_PHONE_STATE};
+    public static final int PERMISSION_ALL = 2;
+
+    public static final String GETIDDEVICE = "";
 
     public static String getEmail(Context context) {
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
@@ -56,32 +64,38 @@ public class Methods {
             String email = getEmail(context);
             String[] accounts = email.split("@");
             account = accounts[0];
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
         }
         return account;
     }
 
-    public static String getDateTimeFormated()
-    {
+    public static String getDateTimeFormated() {
         SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyyMMdd_hhmmss");
-        return simpleFormat.format( new Date( System.currentTimeMillis() ));
+        return simpleFormat.format(new Date(System.currentTimeMillis()));
     }
 
     public static String getNameDevice(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             return tm.getMmsUserAgent();
-        }
-        else return "Smartphone Padrao";
+        } else return "Smartphone Padrao";
     }
 
     public static String getIDDevice(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return tm.getDeviceId();
-       // }
-       // else return "0000000000";
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return "0000000000";
+        }
+        else return tm.getDeviceId();
     }
 
     public static void showMessage(final Activity activity, String mensagem) {
@@ -183,6 +197,19 @@ public class Methods {
     {
         // SandBox
         return System.getenv("EXTERNAL_STORAGE");
+    }
+
+    public static boolean AskPermissionGrand(Activity activity, Context appContext) {
+        boolean retorno = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (String permission : PERMISSIONS) {
+                if (appContext.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, PERMISSIONS, PERMISSION_ALL);
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
     }
 
 }

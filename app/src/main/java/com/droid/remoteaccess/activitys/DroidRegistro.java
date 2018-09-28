@@ -71,48 +71,53 @@ public class DroidRegistro extends AppCompatActivity {
         ll_registro = (LinearLayout) findViewById(R.id.telaregistro_ll_registro);
         rl_aguarde = (LinearLayout) findViewById(R.id.telaregistro_rl_aguarde);
 
-        if (ContatoCadastrado()) {
-            finish();
-            ChamaListaContatos();
-        }
+        if (Methods.AskPermissionGrand( this, context.getApplicationContext())) {
 
-
-        btn_registrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ll_registro.setVisibility(View.INVISIBLE);
-                rl_aguarde.setVisibility(View.VISIBLE);
-                ContatoCadastrado();
+            if (ContatoCadastrado()) {
+                finish();
+                ChamaListaContatos();
             }
-        });
-
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
 
 
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(Constantes.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    ChamaListaContatos();
-                    Toast.makeText(context, getString(R.string.gcm_send_message), Toast.LENGTH_SHORT).show();
-                    Intent mIntent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(mIntent);
-                    finish();
+            btn_registrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ll_registro.setVisibility(View.INVISIBLE);
+                    rl_aguarde.setVisibility(View.VISIBLE);
+                    ContatoCadastrado();
+                }
+            });
 
-                } else {
+            mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
 
-                    Toast.makeText(context, getString(R.string.token_error_message), Toast.LENGTH_SHORT).show();
-                    ll_registro.setVisibility(View.VISIBLE);
-                    rl_aguarde.setVisibility(View.INVISIBLE);
+
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context);
+                    boolean sentToken = sharedPreferences
+                            .getBoolean(Constantes.SENT_TOKEN_TO_SERVER, false);
+                    if (sentToken) {
+                        ChamaListaContatos();
+                        Toast.makeText(context, getString(R.string.gcm_send_message), Toast.LENGTH_SHORT).show();
+                        Intent mIntent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(mIntent);
+                        finish();
+
+                    } else {
+
+                        Toast.makeText(context, getString(R.string.token_error_message), Toast.LENGTH_SHORT).show();
+                        ll_registro.setVisibility(View.VISIBLE);
+                        rl_aguarde.setVisibility(View.INVISIBLE);
+
+                    }
 
                 }
+            };
+        }
+        else finish();
 
-            }
-        };
     }
 
     private void ChamaListaContatos() {
@@ -136,7 +141,7 @@ public class DroidRegistro extends AppCompatActivity {
     }
 
     private boolean ContatoCadastrado() {
-        boolean contatoCadastrado = persintencia.JaExisteContatoCadastrado(Methods.getIDDevice(context));
+        boolean contatoCadastrado = persintencia.JaExisteContatoCadastrado(Methods.getIDDevice( context));
 
         if (!contatoCadastrado) {
             if (Methods.checkPlayServices(DroidRegistro.this)) {
